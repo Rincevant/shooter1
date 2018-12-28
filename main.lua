@@ -17,19 +17,19 @@ function love.load()
     
     -- Player
     player = {}
-    player.image = love.graphics.newImage("images/player.png")
+    player.image = love.graphics.newImage("images/player2.png")
     player.x = 0
     player.y = 500
     player.bullets = {}
-    player.countdown = 5
+    player.countdown = 20
 
     -- Bullet
     player.fire = function()
         if player.countdown < 0 then
-            player.countdown = 5
+            player.countdown = 20
             bullet = {}
-            bullet.x = player.x - 5
-            bullet.y = player.y - player.image:getHeight()/4
+            bullet.x = player.x - 2.5
+            bullet.y = player.y - player.image:getHeight() / 2
             table.insert( player.bullets, bullet)
         end
     end
@@ -106,15 +106,15 @@ function love.draw()
     love.graphics.draw(stars.stars2, 0, stars_3, 0 , 0.4, 0.4)
     
     -- Draw Player
-    love.graphics.draw(player.image, player.x, player.y, 0, 0.5, 0.5, player.image:getWidth()/2, player.image:getHeight()/2)
+    love.graphics.draw(player.image, player.x, player.y, 0, 1, 1, player.image:getWidth()/2, player.image:getHeight()/2)
     
     -- Draw Player Bullet
     for _,b in pairs(player.bullets) do
-        love.graphics.rectangle("fill", b.x, b.y, 10, 10)
+        love.graphics.rectangle("fill", b.x, b.y, 5, 5)
     end
 
     -- Draw enemy
-    love.graphics.draw(enemy.image, enemy.x, enemy.y, math.rad(180), 0.5, 0.5, enemy.image:getWidth()/2, enemy.image:getHeight()/2)
+    love.graphics.draw(enemy.image, enemy.x, enemy.y, math.rad(180), 1, 1, enemy.image:getWidth()/2, enemy.image:getHeight()/2)
     information()
 end
 
@@ -126,8 +126,8 @@ function information()
 end
 
 function CheckCollision(b)
-        return b.x <  enemy.x + enemy.image:getWidth() / 4 and 
-           enemy.x - enemy.image:getWidth() / 4 < b.x + 10 and
-           b.y < enemy.y + enemy.image:getHeight() / 4 and
-           enemy.y - enemy.image:getHeight() / 4 < b.y + 10
+        return b.x <  enemy.x + enemy.image:getWidth() / 2 and 
+           enemy.x - enemy.image:getWidth() / 2 < b.x + 5 and
+           b.y < enemy.y + enemy.image:getHeight() / 2 and
+           enemy.y - enemy.image:getHeight() / 2 < b.y + 5
 end
