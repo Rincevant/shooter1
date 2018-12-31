@@ -3,6 +3,7 @@ Enemy = {
     y = 0,
     countdown = 20,
     speed = 0.5,
+    image = "",
     
     new = function()
         e = {}

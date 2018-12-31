@@ -4,20 +4,20 @@ require("player")
 function love.load()
     
     -- Setup Window
-    --love.window.setMode(1920,1080, {fullscreen=true})
+    love.window.setMode(1920,1080, {fullscreen=true})
     width = love.graphics.getWidth()
     height = love.graphics.getHeight()
 
     -- Load Background
     background = love.graphics.newImage("images/nebula_blue.png")
     stars = {}
-    stars.stars1 = love.graphics.newImage("images/stars_small.png")
+    stars.stars1 = love.graphics.newImage("images/stars_small1.png")
     stars.stars2 = love.graphics.newImage("images/stars_small2.png")
     table.insert( stars, stars.stars1)    
     table.insert( stars, stars.stars1)
     stars_1 = 0
-    stars_2 = -600
-    stars_3 = -600
+    stars_2 = -height
+    stars_3 = -height
     
     -- Load Player
     p1 = Player.new()
@@ -38,13 +38,13 @@ function love.load()
         enemies[i] = {}
         for j=1, 10 do
             e = Enemy.new()
+            e.image = love.graphics.newImage("/images/enemy-big.png")
             enemies[i][j] = e
         end
     end
 
     for j = 1, #level1 do
-        for i = 0, 9 do
-            --Enemy[i+1]:spawn( (Ew/2*i) + (15*(i+1)) + ((width-Lw)/2), j* -40)
+        for i = 0, 9 do            
             enemies[j][i+1]:spawn((Ew/2*i) + (15*(i+1)) + ((width-Lw)/2), j* -40)
         end
     end
@@ -100,12 +100,12 @@ function love.update(dt)
     end
 
     -- Update Background
-    if (stars_1 > 600) then
-        stars_1 = -600
-    elseif (stars_2 > 600) then
-        stars_2 = -600
-    elseif (stars_3 > 600) then
-        stars_3 = -1500
+    if (stars_1 > height) then
+        stars_1 = -height
+    elseif (stars_2 > height) then
+        stars_2 = -height
+    elseif (stars_3 > height) then
+        stars_3 = -height
     end
     
     stars_1 = stars_1 + 0.5
@@ -116,12 +116,12 @@ end
 function love.draw()
     
     -- Draw Background
-    love.graphics.draw(background, 0, 0, 0, 0.4, 0.4)
-    love.graphics.draw(stars[1], 0, stars_1, 0)
-    love.graphics.draw(stars[2], 0, stars_2, 0)
-    love.graphics.draw(stars.stars2, 0, stars_3, 0 , 0.4, 0.4)
+    love.graphics.draw(background, 0, 0, 0, width/background:getWidth(), width/background:getHeight())
+    love.graphics.draw(stars[1], 0, stars_1, 0, width/stars.stars1:getWidth(), width/stars.stars1:getHeight() )
+    love.graphics.draw(stars[2], 0, stars_2, 0, width/stars.stars1:getWidth(), width/stars.stars1:getHeight())
+    love.graphics.draw(stars.stars2, 0, stars_3, 0 , width/stars.stars2:getWidth(), width/stars.stars2:getHeight())
     
-    -- Draw p1
+    -- Draw Player
     love.graphics.draw(p1.image, p1.x, p1.y, 0, 1, 1, p1.image:getWidth()/2, p1.image:getHeight()/2)
     
     -- Draw p1 Bullet
@@ -130,8 +130,8 @@ function love.draw()
     end
 
     -- Draw enemy
-    for i,e in ipairs(Enemy) do
-        love.graphics.rectangle("fill", e.x, e.y, Ew/4, Ew/4)
+    for i,e in ipairs(Enemy) do        
+        love.graphics.draw(e.image, e.x, e.y, 0, 1, 1 ,16,16)
     end
 
     -- Draw Enemy Bullet
